@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>AirCanada Automation</title>
+		<link id="favicon" rel="icon" type="image/x-icon" href="{{ url_for('static', path='assets/img/favicon.ico') }}">
+        <link href="{{ url_for('static', path='css/styles.css') }}" rel="stylesheet" />
+        <link href="{{ url_for('static', path='css/project.css') }}" rel="stylesheet" />
+		<link href="{{ url_for('static', path='css/loader.css') }}" rel="stylesheet">
+        <script src="{{ url_for('static', path='js/fontawesome-all.js') }}" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="/">
+				<i class="fa-brands fa-canadian-maple-leaf"></i> AirCanada-Triage
+			</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
+				<i class="fas fa-bars"></i>
+			</button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <!-- div class="input-group">
+                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                </div -->
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i>{{User}}</a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" onclick=LogOut()>Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <a class="nav-link" href="/">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table-list"></i></div>
+                                Dashboard
+                            </a>
+							<a class="nav-link" href="/viewcase">
+                                <div class="sb-nav-link-icon"><i class="fas fa-eye"></i></i></div>
+                                View Case
+                            </a>
+							<a class="nav-link" href="/newcase">
+                                <div class="sb-nav-link-icon"><i class="fas fa-file-lines"></i></i></div>
+                                New Case
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">New Case</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+							<li class="breadcrumb-item"><a href="/viewcase">View Case</a></li>
+                            <li class="breadcrumb-item active">New Case</li>
+                        </ol>
+						<h5>Enter a new Case:</h5>
+                        <div class="card mb-4">
+							<div class="card-body">
+								<form id="upload-newcase-form">									
+									<div class="col-md-2 mb-3">
+										<label class="control-label" for="processingDate">Processing Date:</label>
+										<input type="date" class="form-control" id="processingDate">
+									</div>
+									<hr class="light-green">
+									<div class="row">
+										<div class="col-md-3 mb-3">
+											<label class="control-label" for="cta-case-id">CTA Case ID:</label>
+											<input type="input" class="form-control" id="cta-case-id" >
+										</div>
+										<div class="col-md-3 mb-3">
+											<div class="form-control inline">
+												<label class="control-label" for="cta-case-single-multiple">CTA case ID Single or multiple:</label>
+												<div class="custom-control custom-radio custom-control-inline">
+												  <input type="radio" id="cta-case-single" name="cta-case-single-multiple" class="custom-control-input" value="Single">
+												  <label class="custom-control-label" for="cta-case-single">Single</label>
+												</div>
+												<div class="custom-control custom-radio custom-control-inline">
+												  <input type="radio" id="cta-case-multiple" name="cta-case-single-multiple" class="custom-control-input" value="Multiple">
+												  <label class="custom-control-label" for="cta-case-multiple">Multiple</label>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6 mb-3">
+											<label class="control-label" for="cta-Additional-case-id">Additional CTA IDs:</label>
+											<input type="input" class="form-control" id="additional-cta-ids" >
+										</div>
+									</div>
+									<hr class="light-green">
+									<div class="col-md-6 mb-3">
+										<div class="form-control inline">
+											<label class="control-label" for="any-other-cta">Are there any other active/ inactive CTA cases with the same flight number, date and PNR?</label>
+											<div class="custom-control custom-radio custom-control-inline">
+											  <input type="radio" id="any-other-cta-active" name="any-other-cta" class="custom-control-input" value="Active">
+											  <label class="custom-control-label" for="any-other-cta-active">Active</label>
+											</div>
+											<div class="custom-control custom-radio custom-control-inline">
+											  <input type="radio" id="any-other-cta-inactive" name="any-other-cta" class="custom-control-input" value="Inactive">
+											  <label class="custom-control-label" for="any-other-cta-inactive">Inactive</label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6 mb-3">
+										<label class="control-label" for="applicant-name">Applicant Name:</label>
+										<input type="input" class="form-control" id="applicant-name" >
+									</div>
+									<hr class="light-green">
+									<div class="row">
+										<div class="col-md-3 mb-3">
+											<div class="form-control inline">
+												<label class="control-label" for="cas-id-yes-no">Do we have CAS ID:</label>
+												<div class="custom-control custom-radio custom-control-inline">
+												  <input type="radio" id="cas-id-yes" name="cas-id-yes-no" class="custom-control-input" value="Yes">
+												  <label class="custom-control-label" for="cas-id-yes">Yes</label>
+												</div>
+												<div class="custom-control custom-radio custom-control-inline">
+												  <input type="radio" id="cas-id-no" name="cas-id-yes-no" class="custom-control-input" value="No">
+												  <label class="custom-control-label" for="cas-id-no">No</label>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-3 mb-3">
+											<label class="control-label" for="number-cas-ids">Number of CAS IDs:</label>
+											<input type="input" class="form-control" id="number-cas-ids" >
+										</div>
+										<div class="col-md-6 mb-3">
+											<label class="control-label" for="number-cas-ids">Additional CAS IDs:</label>
+											<input type="input" class="form-control" id="additional-cas-ids" >
+										</div>
+									</div>
+									<hr class="light-green">
+									<div class="row">
+										<div class="col-md-3 mb-3">
+											<label class="control-label" for="initialDeadline">Initial deadline:</label>
+											<input type="date" class="form-control" id="initialDeadline">
+										</div>
+										<div class="col-md-3 mb-3">
+											<label class="control-label" for="additional-cas-ids">Days left for delivery:</label>
+											<input type="number" step="1" class="form-control" id="days-Left" disabled>
+										</div>
+									</div>
+									<hr class="light-green">
+									<div class="row">
+										<div class="col-md-3 mb-3">
+											<label class="control-label" for="reason-claim">Reason for Claim</label>
+											<select class="form-control" name="reason-claim" id="reason-claim">
+												<option selected disabled>-- Click to Select from Dropdown--</option>
+												<option value="Cancellation">Cancellation</option>
+												<option value="Delay">Delay</option>
+												<option value="Baggage">Baggage</option>
+												<option value="Denied Boarding">Denied Boarding</option>
+												<option value="Cancellation and Baggage">Cancellation and Baggage</option>
+												<option value="Delay and Baggage">Delay and Baggage</option>
+											</select>
+										</div>
+										<div class="col-md-3 mb-3">
+											<label class="control-label" for="baggage-claim-number">Baggage claim number from CTA complaint</label>
+											<input type="input" class="form-control" id="baggage-claim-number" >
+										</div>
+									</div>
+									<hr class="light-green">
+									<div class="row">
+										<div class="col-md-3 mb-3">
+											<label class="control-label" for="primary-reason">Primary reason for disruption</label>
+											<select class="form-control" name="primary-reason" id="primary-reason">
+												<option selected disabled>-- Click to Select from Dropdown--</option>
+												<option value="Maintenance">Maintenance</option>
+												<option value="ATC">ATC</option>
+												<option value="Manpower">Manpower</option>
+												<option value="Weather">Weather</option>
+												<option value="Crew">Crew</option>
+												<option value="Denied Boarding">Denied Boarding</option>
+												<option value="Labour strike">Labour strike</option>
+												<option value="Political">Political</option>
+												<option value="Medical emergency">Medical emergency</option>
+												<option value="schedule change">schedule change</option>
+											</select>
+										</div>
+										<div class="col-md-3 mb-3">
+											<label class="control-label" for="secondary-reason">Secondary reason for disruption</label>
+											<select class="form-control" name="secondary-reason" id="secondary-reason">
+												<option selected disabled>-- Click to Select from Dropdown--</option>
+												<option value="Maintenance">Maintenance</option>
+												<option value="ATC">ATC</option>
+												<option value="Manpower">Manpower</option>
+												<option value="Weather">Weather</option>
+												<option value="Crew">Crew</option>
+												<option value="Denied Boarding">Denied Boarding</option>
+												<option value="Labour strike">Labour strike</option>
+												<option value="Political">Political</option>
+												<option value="Medical emergency">Medical emergency</option>
+												<option value="schedule change">schedule change</option>
+											</select>
+										</div>
+									</div>
+									<hr class="light-green">
+									<div class="row">
+										<div class="col-md-3 mb-3">
+											<label class="control-label" for="claim-amount">Claim Amount</label>
+											<div class="input-icon">
+												<input min="0" step="1" type="number" class="form-control" id="claim-amount" aria-describedby="tooltip-claim-amount">
+												<i>C$</i>
+											</div>
+											<small id="tooltip-claim-amount" class="format-text text-muted">Enter Only Numbers</small>
+										</div>
+										<div class="col-md-3 mb-3">
+											<label class="control-label" for="claim-amount-2">Re - Enter Claim Amount</label>
+											<div class="input-icon">
+												<input type="password" class="form-control" id="claim-amount-2" aria-describedby="tooltip-claim-amount-2" >
+												<i>C$</i>
+											</div>
+											<small id="tooltip-claim-amount-2" class="format-text text-muted">Re - enter For confirmation, cannot copy paste</small>
+										</div>
+										<div class="col-md-3 mb-3">
+											<label class="control-label" for="total-delay">Total Delay</label>
+											<input type="input" class="form-control" id="total-delay" placeholder="hh:mm">
+										</div>
+										<div class="col-md-3 mb-3">
+											<label class="control-label" for="total-delay">Flight Date</label>
+											<input type="date" class="form-control" id="flight-date" >
+										</div>
+									</div>
+									<hr class="light-green">
+									<div class="row">
+										<div class="col-md-6 mb-3">
+											<label class="control-label" for="additional-docs">k. Is there any document that should be requested (Example: Crew details Missing)</label>
+											<input type="input" class="form-control" id="additional-docs" >
+										</div>
+										<div class="col-md-6 mb-3">
+											<div class="form-control inline">
+												<label class="control-label" for="duplicate-case-yes-no">Have u identified a duplicate CTA case</label>
+												<div class="custom-control custom-radio custom-control-inline">
+												  <input type="radio" id="duplicate-case-yes" name="duplicate-case-yes-no" class="custom-control-input" value="Yes">
+												  <label class="custom-control-label" for="duplicate-case-yes">Yes</label>
+												</div>
+												<div class="custom-control custom-radio custom-control-inline">
+												  <input type="radio" id="duplicate-case-no" name="duplicate-case-yes-no" class="custom-control-input" value="No">
+												  <label class="custom-control-label" for="duplicate-case-no">No</label>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-2 form-group required">
+											<button type="submit" id="generateVerdict" class="btn btn-primary">Generate verdict</button>
+										</div>
+										<div class="col-md-2" id="LoaderForGenerate" style="visibility:hidden;">
+											<br>
+											<div class="loader17">
+												<span></span>
+												<span></span>
+												<span></span>
+												<span></span>
+												<span></span>
+												<span></span>
+											</div>
+										</div>
+									</div>
+									<hr class="light-green">
+									<div class="col-md-6 mb-3">
+										<label class="control-label" for="verdict">Verdict:</label>
+										<input type="input" class="form-control" id="verdict" disabled>
+									</div>
+									<div class="row">
+										<div class="col-md-6 mb-3">
+											<label class="control-label" for="affidavit-required"></label>
+											<div class="form-control inline">
+													<label class="control-label" for="affidavit-required-yes-no">Affidavit Required</label>
+													<div class="custom-control custom-radio custom-control-inline">
+													  <input type="radio" id="affidavit-required-yes" name="affidavit-required-yes-no" class="custom-control-input" value="Yes" disabled>
+													  <label class="custom-control-label" for="affidavit-required-yes">Yes</label>
+													</div>
+													<div class="custom-control custom-radio custom-control-inline">
+													  <input type="radio" id="affidavit-required-no" name="affidavit-required-yes-no" class="custom-control-input" value="No" disabled>
+													  <label class="custom-control-label" for="affidavit-required-no">No</label>
+													</div>
+												</div>
+										</div>
+										<div class="col-md-6 mb-3">
+											<label class="control-label" for="affidavit-type">Type of Affidavit</label>
+											<input type="input" class="form-control" id="affidavit-type" disabled>
+										</div>
+									</div>
+									<div class="col-md-6 mb-3">
+										<label class="control-label" for="evidenceMissing">Evidence Missing:</label>
+										<input type="input" class="form-control" id="evidenceMissing" disabled>
+									</div>
+									<hr class="light-green">
+									<div class="row" id="submitButtonArea" style="visibility:hidden;">
+										<div class="col-md-2 form-group required">
+											<button type="submit" id="submitCase" class="btn btn-success">Submit Case</button>
+										</div>
+										<div class="col-md-2" id="LoaderForSubmit" style="visibility:hidden;">
+											<br>
+											<div class="loader17">
+												<span></span>
+												<span></span>
+												<span></span>
+												<span></span>
+												<span></span>
+												<span></span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6 mb-3">
+										<p id="submissionStatus"></p>
+									</div>
+								</form>
+                            </div>
+                        </div>
+                        <!--div class="card mb-4"><div class="card-body">When scrolling, the navigation stays at the top of the page. This is the end of the static navigation demo.</div></div-->
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; <b>Deloitte India</b></div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </body>
+	<script src="{{ url_for('static', path='js/bootstrap.bundle.min.js') }}" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', path='js/scripts.js') }}"></script>
+	<script src="{{ url_for('static', path='/vendor/jquery/jquery-3.6.0.min.js') }}"></script>
+	<script src="{{ url_for('static', path='js/project/newcase.js') }}" crossorigin="anonymous"></script>
+</html>

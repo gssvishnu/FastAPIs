@@ -1,0 +1,31 @@
+.input-icon {
+  position: relative;
+}
+
+.input-icon > i {
+  position: absolute;
+  display: block;
+  transform: translate(0, -50%);
+  top: 50%;
+  pointer-events: none;
+  width: 25px;
+  text-align: center;
+  font-style: normal;
+}
+
+.input-icon > input {
+  padding-left: 25px;
+  padding-right: 0;
+}
+hr.light-green {
+	border-top:1px dotted #477d2c;
+}
+
+.dataTables_scroll
+{
+	overflow:auto;
+}
+
+.dataTables_filter {
+	margin-bottom: 25px;
+}
